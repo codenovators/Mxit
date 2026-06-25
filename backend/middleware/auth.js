@@ -1,5 +1,9 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const path = require("path");
+const auth = require("./middleware/auth");
 
+// LOGIN ROUTE
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -29,7 +33,7 @@ app.post("/login", async (req, res) => {
     process.env.JWT_SECRET,
     {
       expiresIn: "7d",
-    },
+    }
   );
 
   res.json({
@@ -38,13 +42,7 @@ app.post("/login", async (req, res) => {
   });
 });
 
-const auth = require("./middleware/auth");
-
-app.get("/chat", auth, (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/public/chat.html"));
-});
-const auth = require("./middleware/auth");
-
+// PROTECTED ROUTE
 app.get("/chat", auth, (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/public/chat.html"));
 });
